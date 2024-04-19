@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Редактор тарифов</title>
+    <div th:replace="~{commons :: head}"></div>
+    <script src="/js/tinymce.min.js"></script>
+</head>
+<body>
+<div th:replace="~{commons :: nav}"></div>
+
+<section class="entity-addEdit" id="entity-addEdit">
+    <div class="container">
+        <form action="/mobilePlans/create" method="POST" th:object="${entity}">
+            <div class="row">
+                <div class="col">
+                    <h3>Создание / Редактирование тарифа</h3>
+                </div>
+            </div>
+            <div class="row mainContainer blogBetween">
+                <div class="col-md-12">
+                    <table class="editTable ">
+                        <tbody>
+                        <tr>
+                            <th><label class="mx-2">Название</label></th>
+                            <td><input type="text" th:field="*{name}" class="form-control" required/></td>
+                        </tr>
+                        <tr>
+                            <th><label class="mx-2">Краткое описание</label></th>
+                            <td><input type="text" th:field="*{shortDescription}" class="form-control" required/></td>
+                        </tr>
+                        <tr>
+                            <th><label class="mx-2">Ссылка на подключение</label></th>
+                            <td><input type="text" th:field="*{urlToConnect}" class="form-control" required/></td>
+                        </tr>
+                        <tr>
+                            <select class="form-control" name="providerId" id="providerId" required>
+                                <option th:if="${entity.provider==null}" th:each="temp : ${providers}"
+                                        th:value="${temp.id}" th:text="${temp.name}"
+                                        th:selected="${entity.provider==temp}"
+                                ></option>
+                                <option th:if="${entity.provider!=null}" th:each="temp : ${providers}"
+                                        th:value="${temp.id}" th:text="${temp.name}"
+                                        th:selected="${entity.provider.id==temp.id}"
+                                ></option>
+                            </select>
+                        </tr>
+                        <tr>
+                            <select class="form-control" name="typeId" id="typeId" required>
+                                <option th:if="${entity.type==null}" th:each="temp : ${types}"
+                                        th:value="${temp.id}" th:text="${temp.name}"
+                                        th:selected="${entity.type==temp}"><
+                                    /option>
+                                <option th:if="${entity.type!=null}" th:each="temp : ${types}"
+                                        th:value="${temp.id}" th:text="${temp.name}"
+                                        th:selected="${entity.type.id==temp.id}"
+                                ></option>
+                            </select>
+                        </tr>
+                        <tr>
+                            <th><label class="mx-2">Цена</label></th>
+                            <td><input type="number" th:field="*{price}" class="form-control" required min="0.01"
+                                       step="0.01"/></td>
+                        </tr>
+                        <tr>
+                            <th><label class="mx-2">Подробное описание</label></th>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div th:replace="~{commons :: richTextEditor}"></div>
+                    <p class="my-5 between">
+                        <input type="hidden" id="id" th:field="*{id}">
+                        <input type="button" class="myButton" value="Назад" onclick="history.back()"/>
+                        <input type="submit" class="myButton" value="Отправить">
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<div th:replace="~{commons :: footer}"></div>
+</body>
+</html>

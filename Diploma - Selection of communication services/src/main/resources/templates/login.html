@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Вход в систему</title>
+    <div th:replace="~{commons :: head}"></div>
+</head>
+<body>
+<div th:replace="~{commons :: nav}"></div>
+
+
+<main class="container">
+    <div class="row">
+        <div class="col">
+            <div class="login-block">
+                <img src="/img/loginAvatar.png" alt="Scanfcode">
+                <br>
+                <h3>Введите свои данные</h3>
+                <form action="/login1" method="POST">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="fa fa-user ti-user"></i></span>
+                            <input type="text" name="username" class="form-control" placeholder="Ваш логин">
+                        </div>
+                    </div>
+                    <hr class="hr-xs">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="fa fa-lock ti-unlock"></i></span>
+                            <input type="password"
+                                   name="password"
+                                   class="form-control"
+                                   placeholder="Ваш суперпароль">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-block" type="submit">ВОЙТИ
+                        НА САЙТ
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{commons :: footer}"></div>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Главная</title>
+    <div th:replace="~{commons :: head}"></div>
+<body>
+
+<div th:replace="~{commons :: nav}"></div>
+
+<section id="mainSection" class="mainSection">
+    <div class="container">
+        <div class="row">
+            <div class="col col-md-3 index-filters">
+                <form action="/findByFilter" method="post">
+                    <div class="providers index-filter" required>
+                        <label>Оператор</label>
+                        <br>
+                        <select name="providerId">
+                            <option value="-1">Все варианты</option>
+                            <option
+                                    th:each="temp : ${providers}"
+                                    th:value="${temp.id}"
+                                    th:text="${temp.name}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="types index-filter">
+                        <label>Вид тарифа</label>
+                        <br>
+                        <select name="typeId" required>
+                            <option value="-1">Все варианты</option>
+                            <option
+                                    th:each="temp : ${types}"
+                                    th:value="${temp.id}"
+                                    th:text="${temp.name}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="services index-filter">
+                        <label>Входящие услуги</label>
+                        <br>
+                        <div class="service-items">
+                            <div class="service-item" th:each="service:${services}">
+                                <input type="checkbox" th:id="'service'+${service.id}" name="service"
+                                       th:value="${service.id}">
+                                <label th:for="'service'+${service.id}" th:text="${service.name}">Service</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prices index-filter">
+                        <label>Стоимость тарифа</label>
+                        <br>
+                        <div class="price-block ">
+                            <span>от</span>
+                            <input type="number" name="priceFrom" class="filter-price-input">
+                            <span>до</span>
+                            <input type="number" name="priceTo" class="filter-price-input">
+                        </div>
+                    </div>
+                    <div class="prices index-filter">
+                        <label>Сортировка результатов</label>
+                        <br>
+                        <select name="sortVariant" required>
+                            <option value="-1">Без сортировки</option>
+                            <option value="1">По цене вверх</option>
+                            <option value="2">По цене вниз</option>
+                            <option value="3">По оператору</option>
+                            <option value="4">По названию</option>
+                        </select>
+                    </div>
+                    <div class="find index-filter">
+                        <input type="submit" value="Поиск" class="index-find-button"/>
+                    </div>
+                </form>
+            </div>
+            <div class="col col-md-8 index-items">
+                <div class="">
+                    <form action="/compare" method="post">
+                        <h2>Тарифные планы</h2>
+                        <input type="submit" value="Сравнить выбранные" class="index-find-button"/>
+                        <div class="index-plans">
+                            <div th:if="${plans==null || #lists.size(plans)==0}">Тарифных планов не найдено</div>
+                            <div class="index-plan" th:each="plan:${plans}">
+                                <div class="item-header">
+                                    <div class="item-name" th:text="${plan.name}">Название тарифа</div>
+                                    <div class="service-item toCompare">
+                                        <input type="checkbox" th:id="'pl'+${plan.id}" name="toCompare"
+                                               th:value="${plan.id}">
+                                        <label th:for="'pl'+${plan.id}">Сравнить</label>
+                                    </div>
+                                </div>
+                                <div class="item-body row">
+                                    <div class="col col-md-8">
+                                        <div class="item-provider" th:text="${plan.provider}">Оператор</div>
+                                        <div class="item-type" th:text="${plan.type}">Тип тарифа</div>
+                                        <div class="item-short-description" th:text="${plan.shortDescription}">Краткое
+                                            описание
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-4 plan-item-buttons">
+                                        <div class="item-price" th:text="'Цена: '+${plan.price}">159$</div>
+                                        <a class="item-connect" th:href="${plan.urlToConnect}">Подключить</a>
+                                        <a class="item-more" th:href="'/planDescription/'+${plan.id}">Подробнее</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div th:replace="~{commons :: footer}"></div>
+
+</body>
+</html>

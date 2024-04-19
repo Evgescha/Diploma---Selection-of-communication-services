@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${entity.name}">Блог</title>
+    <div th:replace="~{commons :: head}"></div>
+<body>
+<div th:replace="~{commons :: nav}"></div>
+
+<section id="description">
+    <div class="container">
+        <div class="row mainContainer description">
+            <div class="col-md-12">
+                <h1 th:text="${entity.name}">Name Plan</h1>
+                <h2 th:text="'Оператор: '+ ${entity.provider}">Name provider</h2>
+                <h3 th:text="'Тип: '+ ${entity.type}">Name type</h3>
+                <h4 th:text="'Цена: '+ ${entity.price}">price</h4>
+                <div class="blogItem-back">
+                    <button class="myButton" onclick="history.back()"><i class="fa fa-arrow-left"
+                                                                         aria-hidden="true"></i>Назад к списку
+                    </button>
+                </div>
+                <a class="myButton" th:href="'/mobilePlans/edit/'+${entity.id}"
+                   th:if="${#request.userPrincipal != null && #request.isUserInRole('ROLE_ADMIN')}">Редактировать</a>
+                <a class="myButton" th:href="'/mobilePlans/delete/'+${entity.id}"
+                   th:if="${#request.userPrincipal != null && #request.isUserInRole('ROLE_ADMIN')}">Удалить</a>
+                <div th:utext="${entity.longDescription}">${entity.longDescription}</div>
+                <div>
+                    <p class="description-services">
+                        Услуги:
+                    <div class="description-service" th:text="${serv}" th:each="serv : ${entity.services}">Услуга</div>
+                    </p>
+                </div>
+                <a class="description-connect-button" th:href="${entity.urlToConnect}">Подключить</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div th:replace="~{commons :: footer}"></div>
+</body>
+</html>

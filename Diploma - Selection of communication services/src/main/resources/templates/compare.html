@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Сравнение тарифов</title>
+    <div th:replace="~{commons :: head}"></div>
+<body>
+
+<div th:replace="~{commons :: nav}"></div>
+
+<section class="list">
+    <div class="container my-2">
+        <div class="card">
+            <div class="row">
+                <div class="card-body col">
+                    <h2 class="text-center">Сравнение тарифов</h2>
+                    <div class="container my-5">
+                        <div class="col-md-12">
+                            <div class="blogItem-back">
+                                <a class="myButton" href="/">
+                                    <i class="fa fa-arrow-left" aria-hidden="true"></i>Назад к списку
+                                </a>
+                            </div>
+                            <h3 th:if="${list==null || #lists.size(list)==0}">Не выбраны тарифы для сравнения</h3>
+                            <div class="overScroll" th:if="${list!=null && #lists.size(list)>0}">
+                                <table class="table table-striped table-responsive-md">
+                                    <thead>
+                                    <tr>
+                                        <th>Свойство/Тариф</th>
+                                        <th th:each="plan:${list}" th:text="${plan.name}">Plan name</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Оператор</td>
+                                        <td th:each="entity : ${list}" th:text="${entity.provider}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Тип тарифа</td>
+                                        <td th:text="${entity.type}" th:each="entity : ${list}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Цена</td>
+                                        <td th:each="entity : ${list}" th:text="${entity.price}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <h3 class="text-center">Услуги тарифов</h3>
+                                <table class="table table-striped table-responsive-md">
+                                    <thead>
+                                    <tr>
+                                        <th>Услуга</th>
+                                        <th th:each="plan:${list}" th:text="${plan.name}">Plan name</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="serv : ${services}">
+                                        <td th:text="${serv.name}">Название услуги</td>
+                                        <td th:each="entity : ${list}" th:text="${entity.haveServiceWithId(serv.id) ? entity.getServiceVariantById(serv.id).value : ' - '}">
+                                            Значение для тарифа
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:replace="~{commons :: footer}"></div>
+
+</body>
+</html>
